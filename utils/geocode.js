@@ -1,0 +1,18 @@
+const request = require("request")
+
+const geoCoding = (address,callback)=>{
+    const url = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+encodeURIComponent(address)+".json?access_token=pk.eyJ1IjoiaGFzbmFpbjA1IiwiYSI6ImNraHZqb3Y2aTBmcjYydm8yMW90aHNkcHEifQ.oWw41QDUTe-OFO6qVijm3w&limit=1"
+    request({ url: url, json: true }, ((error, response) => {
+        if (error) {
+            callback("Error : API not working",undefined)
+        }else{
+            callback(undefined, {
+                latitude: response.body.features[0].center[0],
+                longitude: response.body.features[0].center[1],
+                place: response.body.features[0].place_name
+            })
+        }
+    }))
+}
+
+module.exports=geoCoding
